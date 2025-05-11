@@ -1,1 +1,72 @@
-﻿<h1>Employee Dashboard</h1>
+﻿@{
+    ViewData["Title"] = "Farmer Dashboard";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Welcome, Employee</h2>
+
+    <div class="row align-items-center mb-4">
+        <div class="col-md-6">
+            <select id="categoryFilter" class="form-select-sm">
+                <option value="">All Categories</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Grains">Grains</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Livestock">Livestock</option>
+            </select>
+        </div>
+
+        <div class="col-md-6 text-end">
+            @using (Html.BeginForm("AddFarmer", "Employee", FormMethod.Get))
+            {
+                <button class="btn btn-success">
+                    <i class="fas fa-user-plus me-1"></i> Add Farmer
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Fresh Tomatoes</h5>
+                    <p class="card-text">Category: Vegetables</p>
+                    <p class="card-text"><small class="text-muted">Created: 2025-05-01</small></p>
+                    <a asp-action="ViewProduct" asp-controller="Farmer" asp-route-id="1" class="btn btn-primary">
+                        <i class="fas fa-eye me-1"></i> View Product
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Golden Apples</h5>
+                    <p class="card-text">Category: Fruits</p>
+                    <p class="card-text"><small class="text-muted">Created: 2025-04-20</small></p>
+                    <a asp-action="ViewProduct" asp-controller="Farmer" asp-route-id="2" class="btn btn-primary">
+                        <i class="fas fa-eye me-1"></i> View Product
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Wheat Bales</h5>
+                    <p class="card-text">Category: Grains</p>
+                    <p class="card-text"><small class="text-muted">Created: 2025-03-10</small></p>
+                    <a asp-action="ViewProduct" asp-controller="Farmer" asp-route-id="3" class="btn btn-primary">
+                        <i class="fas fa-eye me-1"></i> View Product
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

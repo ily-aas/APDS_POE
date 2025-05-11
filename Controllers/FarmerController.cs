@@ -19,7 +19,7 @@ namespace APDS_POE.Controllers
         [HttpPost]
         public IActionResult AddProduct(Product Product)
         {
-            return View("AddProduct");
+            return Ok();
         }
     }
 }

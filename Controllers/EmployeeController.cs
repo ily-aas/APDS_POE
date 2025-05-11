@@ -9,5 +9,18 @@ namespace APDS_POE.Controllers
         {
             return View("E_Dashboard");
         }
+
+        [HttpGet]
+        public IActionResult AddFarmer()
+        {
+
+            return View("AddFarmer");
+        }
+
+        [HttpPost]
+        public IActionResult AddFarmer(User user)
+        {
+            return Ok();
+        }
     }
 }
