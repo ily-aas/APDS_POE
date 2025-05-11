@@ -4,6 +4,16 @@
 }
 
 <div class="container mt-4">
+    <!-- Logout Button -->
+    <div class="text-end mb-4">
+        @using (Html.BeginForm("Logout", "Account", FormMethod.Post))
+        {
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-sign-out-alt me-1"></i> 
+            </button>
+        }
+    </div>
+
     <!-- Welcome Message -->
     <div class="text-center mb-4">
         <h2>Welcome, @username!</h2>
@@ -39,5 +49,3 @@
         }
     </div>
 </div>
-
-

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using static APDS_POE.Models.System.Enums;
 using static APDS_POE.Models.System.EnumExtensions;
 using Microsoft.AspNetCore.Authorization;
+using APDS_POE.Models;
 
 namespace APDS_POE.Services
 {
@@ -32,12 +33,13 @@ namespace APDS_POE.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GenerateToken(string username, UserRole role)
+        public string GenerateToken(User user, UserRole role)
         {
             var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.Name, username),
+                            new Claim(ClaimTypes.Name, user.Username),
                             new Claim(ClaimTypes.Role, role.GetEnumDescription()),
+                            new Claim(ClaimTypes.Sid,user.Id.ToString())
                         };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));

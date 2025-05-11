@@ -12,10 +12,12 @@ namespace APDS_POE.Repositories
     public class ProductRepository:IProductRepository
     {
         private readonly AppDbContext DB;
+        private readonly IHelperService _helper;
 
-        public ProductRepository(AppDbContext dbContext)
+        public ProductRepository(AppDbContext dbContext, IHelperService helperService)
         {
             DB = dbContext;
+            _helper = helperService;
         }
 
         public AppResponse AddProduct(Product Product)
@@ -25,8 +27,8 @@ namespace APDS_POE.Repositories
 
             try
             {
-                //TODO: Get Signed in user
-                Product.UserId = 1;
+                var User = _helper.GetSignedInUser();
+                Product.UserId = User == null ? 0 : User.Id;
                 Product.DateCreated = DateTime.Now;
 
                 DB.Products.Add(Product);

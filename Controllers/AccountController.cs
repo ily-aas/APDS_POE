@@ -33,10 +33,13 @@ namespace APDS_POE.Controllers
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return BadRequest();
 
-            var response = Repo.Login(username,password,IsAdmin);
+            var user = Repo.Login(username,password,IsAdmin);
+
+            if (user == null)
+                return BadRequest();
 
             //Generate the token
-            var token = _auth.GenerateToken(username, Role);
+            var token = _auth.GenerateToken(user, Role);
 
             var cookieOptions = new CookieOptions
             {
@@ -48,10 +51,10 @@ namespace APDS_POE.Controllers
 
             Response.Cookies.Append("jwt_token", token, cookieOptions);
 
-            if (response.IsSuccess && IsAdmin)
+            if (!user.HasErrors && IsAdmin)
                 return RedirectToAction("Index","Employee");
 
-            if (response.IsSuccess && !IsAdmin)
+            if (!user.HasErrors && !IsAdmin)
                 return RedirectToAction("Index", "Farmer");
 
             ViewBag.Error = "Invalid username or password";

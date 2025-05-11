@@ -8,7 +8,7 @@ namespace APDS_POE.Repositories
  
     public interface IUserRepository
     {
-        public AppResponse Login(string Username, string Password, bool IsAdmin = false);
+        public User? Login(string Username, string Password, bool IsAdmin = false);
         public AppResponse AddUser(User user);
     }
     public class UserRepository : IUserRepository
@@ -21,10 +21,10 @@ namespace APDS_POE.Repositories
             DB = dbContext;
         }
 
-        public AppResponse Login(string Username, string Password, bool IsAdmin = false)
+        public User? Login(string Username, string Password, bool IsAdmin = false)
         {
 
-            User? user;
+            User? user = new User();
             AppResponse response = new AppResponse();
 
             try
@@ -40,20 +40,16 @@ namespace APDS_POE.Repositories
 
                 if (user == null)
                 {
-                    response.IsSuccess = false;
-                    response.Message = IsAdmin ? "Admin credentials invalid" : "User credentials invalid";
-                    return response;
+                    return null;
                 }
 
-                response.IsSuccess = true;
-                response.Message = IsAdmin ? "Admin login successful" : "User login successful";
-                return response;
+                user.HasErrors = false;
+                user.Message = "Successfully logged in";
+                return user;
             }
             catch (Exception ex)
             {
-                response.IsSuccess = false;
-                response.Message = IsAdmin ? "Admin credentials invalid" : "User credentials invalid";
-                return response;
+                return null;
             }
 
         }
