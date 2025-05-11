@@ -8,9 +8,6 @@ namespace APDS_POE.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public int FarmerId { get; set; }
-
         [Required, MaxLength(250)]
         public string Name { get; set; }
 
@@ -24,6 +21,14 @@ namespace APDS_POE.Models
         public int UserId { get; set; }
 
         public DateTime? ProductionDate { get; set; }
+
+
+        [NotMapped]
+        public bool HasErrors { get; set; }
+
+        [NotMapped]
+        public string? Message  { get; set; }
+
     }
     
 }
