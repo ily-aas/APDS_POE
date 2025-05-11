@@ -9,6 +9,7 @@ namespace APDS_POE.Repositories
     public interface IUserRepository
     {
         public AppResponse Login(string Username, string Password, bool IsAdmin = false);
+        public AppResponse AddUser(User user);
     }
     public class UserRepository : IUserRepository
     {
@@ -57,5 +58,28 @@ namespace APDS_POE.Repositories
 
         }
 
+        public AppResponse AddUser(User user)
+        {
+
+            AppResponse response = new AppResponse();
+
+            try
+            {
+                user.DateCreated = DateTime.Now;
+
+                DB.User.Add(user);
+                DB.SaveChanges();
+
+                response.IsSuccess = true;
+                response.Message = "Farmer added successfully";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = true;
+                response.Message = $"An error occurred while attempting to add a farmer: {ex.Message}";
+                return response;
+            }
+        }
     }
 }

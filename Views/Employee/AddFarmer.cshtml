@@ -1,54 +1,72 @@
 ﻿@model APDS_POE.Models.User
 
-<form asp-action="Register" asp-controller="User" method="post" class="container mt-4">
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    if (Model.HasErrors)
+    {
+        <div class="alert alert-danger text-center mb-4 mt-3" role="alert">
+            @Html.Raw(Model.Message);
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success text-center mb-4 mt-3" role="alert">
+            @Html.Raw(Model.Message);
+        </div>
+    }
+}
+
+
+@using (Html.BeginForm("AddFarmer", "Employee", FormMethod.Post, new { @class = "container mt-4" }))
+{
     <h3 class="mb-4">User Registration</h3>
 
     <div class="form-group mb-3">
-        <label asp-for="FullName" class="form-label"></label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
+        @Html.LabelFor(m => m.FullName, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", maxlength = "100", required = "required" })
+        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group mb-3">
-        <label asp-for="Username" class="form-label"></label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
+        @Html.LabelFor(m => m.Username, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", maxlength = "50", required = "required" })
+        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group mb-3">
-        <label asp-for="Password" class="form-label"></label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+        @Html.LabelFor(m => m.Password, htmlAttributes: new { @class = "form-label" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", maxlength = "50", required = "required" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group mb-3">
-        <label asp-for="MobileNo" class="form-label"></label>
-        <input asp-for="MobileNo" class="form-control" />
-        <span asp-validation-for="MobileNo" class="text-danger"></span>
+        @Html.LabelFor(m => m.MobileNo, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.MobileNo, new { @class = "form-control", maxlength = "10" })
+        @Html.ValidationMessageFor(m => m.MobileNo, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+        @Html.LabelFor(m => m.Email, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", maxlength = "50", type = "email" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group mb-3">
-        <label asp-for="Address" class="form-label"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+        @Html.LabelFor(m => m.Address, htmlAttributes: new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", maxlength = "250" })
+        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group mb-4">
-        <label asp-for="UserRole" class="form-label">User Role</label>
-        <select asp-for="UserRole" class="form-select">
-            <option value="0">Farmer</option>
-            <option value="1">Employee</option>
-        </select>
-        <span asp-validation-for="UserRole" class="text-danger"></span>
+        @Html.LabelFor(m => m.UserRole, htmlAttributes: new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.UserRole, new SelectList(new[] {
+            new { Value = 0, Text = "Farmer" }
+        }, "Value", "Text"), "Select Role", new { @class = "form-select", required = "required" })
+        @Html.ValidationMessageFor(m => m.UserRole, "", new { @class = "text-danger" })
     </div>
 
     <button type="submit" class="btn btn-primary float-end">
         <i class="fas fa-user-plus"></i> Register
     </button>
-</form>
+}
+

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APDS_POE.Models
 {
@@ -27,6 +28,14 @@ namespace APDS_POE.Models
 
         [Required]
         public int UserRole { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        [NotMapped]
+        public bool HasErrors { get; set; }
+
+        [NotMapped]
+        public string? Message { get; set; }
 
         //public ICollection<Product>? Products { get; set; }
     }
