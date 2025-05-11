@@ -29,7 +29,7 @@ namespace APDS_POE.Models
         [Required]
         public int UserRole { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
         [NotMapped]
         public bool HasErrors { get; set; }

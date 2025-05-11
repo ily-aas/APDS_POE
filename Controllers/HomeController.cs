@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using APDS_POE.Models;
 using APDS_POE.Models.System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APDS_POE.Controllers;
 
@@ -14,6 +15,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [AllowAnonymous]
     public IActionResult Index()
     {
         return View();
@@ -24,11 +26,13 @@ public class HomeController : Controller
         return View();
     }
 
+    [AllowAnonymous]
     public IActionResult FarmerLogin()
     {
         return View("~/Views/Farmer/FarmerLogin.cshtml");
     }
 
+    [AllowAnonymous]
     public IActionResult EmployeeLogin()
     {
         return View("~/Views/Employee/EmployeeLogin.cshtml");

@@ -15,6 +15,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+//Auth
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<JwtAuthentication>();
+builder.Services.AddSession(); // Make sure session is enabled
+builder.Services.AddDistributedMemoryCache();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,7 +33,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
+app.UseRouting();
 
+// Add middleware
+app.UseSession();
+app.UseMiddleware<JwtMiddleware>(); // <-- our custom JWT middleware
 app.UseRouting();
 
 app.UseAuthorization();

@@ -1,5 +1,6 @@
 ﻿using APDS_POE.Models;
 using APDS_POE.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APDS_POE.Controllers
@@ -13,12 +14,14 @@ namespace APDS_POE.Controllers
             _userRepo = userRepository;
         }
 
+        [Authorize(Roles = "Employee")]
         public IActionResult Index()
         {
             return View("E_Dashboard");
         }
 
         [HttpGet]
+        [Authorize(Roles = "Employee")]
         public IActionResult Farmer(User user)
         {
 
@@ -26,6 +29,7 @@ namespace APDS_POE.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Employee")]
         public IActionResult AddFarmer(User user)
         {
             if (user == null)
