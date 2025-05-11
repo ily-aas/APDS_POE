@@ -1,4 +1,4 @@
-namespace APDS_POE.Models
+namespace APDS_POE.Models.System
 {
     public class ErrorViewModel
     {

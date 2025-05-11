@@ -1,0 +1,48 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Add New Product</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="AddProduct" method="post">
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Product Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Category" class="form-label">Category</label>
+                    <select class="form-select" id="Category" name="Category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Grains">Grains</option>
+                        <option value="Dairy Products">Dairy Products</option>
+                        <option value="Poultry">Poultry</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ProductionDate" class="form-label">Production Date</label>
+                    <input asp-for="ProductionDate" type="date" class="form-control" />
+                    <span asp-validation-for="ProductionDate" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success float-end">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
