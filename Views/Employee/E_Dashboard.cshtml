@@ -17,14 +17,13 @@
 
     <div class="row align-items-center mt-4 mb-4">
         <div class="col-md-6">
-            <select id="categoryFilter" class="form-select-sm">
-                <option value="">All Categories</option>
-                <option value="Vegetables">Vegetables</option>
-                <option value="Fruits">Fruits</option>
-                <option value="Grains">Grains</option>
-                <option value="Dairy">Dairy</option>
-                <option value="Livestock">Livestock</option>
-            </select>
+            <button class="btn btn-info me-2" onclick="RenderPartialContainer(1)">
+                <i class="fas fa-eye"></i> View Products
+            </button>
+            <button class="btn btn-warning" onclick="RenderPartialContainer(2)">
+                <i class="fas fa-eye"></i> View Farmers
+            </button>
+
         </div>
 
         <div class="col-md-6 text-end">
@@ -36,43 +35,68 @@
             }
         </div>
     </div>
-
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var user in Model)
-        {
-            <div class="col">
-                <div class="card h-100 text-center" style="cursor:pointer">
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center" data-id="@user.Id" onclick="ViewProducts(this)">
-                        <div class="mb-3">
-                            <i class="fas fa-user-circle fa-4x text-muted"></i>
-                        </div>
-                        <h5 class="card-title">Name : @user.FullName</h5>
-                        <p class="card-text">Username : @user.Username</p>
-                        <p class="card-text"><small class="text-muted">Date Created : @user.DateCreated</small></p>
-                    </div>
-                </div>
-            </div>
-        }
-        
-    </div>
+    <div id="PartialViewContainer" class="row"></div>
 </div>
 
 <script>
 
-    const ViewProducts = (elem) =>{
+    const RenderPartialContainer = (type) => {
+
+        let param = parseInt(type);
+
+        $.ajax({
+            url: '@Url.Action("RenderPartial", "Employee")',
+            method: 'GET',
+            data:{
+                Type : param,
+            },
+            contentType: 'application/json',
+            success: function (data) {
+                $('#PartialViewContainer').children().remove();
+                 $('#PartialViewContainer').append(data);
+            },
+            error: function (xhr) {
+                $('#PartialViewContainer').children().remove();
+                alert("An error occurred while trying to get the partial view");
+            }
+        });
+
+    }
+
+    const ViewFarmerProducts = (elem) =>{
 
         let id = $(elem).data('id');
 
         $.ajax({
-            url: '@Url.Action("ViewProducts", "Employee")', 
+            url: '@Url.Action("ViewFarmerProducts", "Employee")', 
             method: 'GET',
             data:{
                 ID : id,
             },
             contentType: 'application/json',
             success: function (data) {
-                console.log("User data:", data);
-                // Handle the data (e.g., populate UI)
+                //Clean View
+                $('.user-container').remove();
+
+                //Display Products
+                $('#FarmerName').text(data.user.fullName);
+
+
+                data.products.forEach(product => {
+                    const row = `
+                        <tr>
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.category}</td>
+                            <td>${product.dateCreated ? new Date(product.dateCreated).toLocaleDateString() : ''}</td>
+                            <td>${product.productionDate ? new Date(product.productionDate).toLocaleDateString() : ''}</td>
+                        </tr>
+                    `;
+                    $('#UserProductsBody').append(row);
+                });
+
+                // Show container
+                $('.product-list-container').removeClass('d-none');
             },
             error: function (xhr) {
                 console.error("Error:", xhr.responseText);
@@ -80,6 +104,45 @@
         });
 
     }
+
+    const applyFilter = () => {
+
+        const category = $('#categoryFilter').val();
+        const date = $('#dateInput').val();
+        const dateFilterType = $('#dateFilter').val();
+
+        $.ajax({
+            url: '@Url.Action("GetFilteredProducts", "Employee")',
+            method: 'GET',
+            data: {
+                Category: category,
+                Date: date,
+                DateFilter: dateFilterType
+            },
+            success: function (data) {
+
+                $('#filteredTableBody').children().remove();
+
+                data.products.forEach(product => {
+                    const row = `
+                        <tr>
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.category}</td>
+                            <td>${product.dateCreated ? new Date(product.dateCreated).toLocaleDateString() : ''}</td>
+                            <td>${product.productionDate ? new Date(product.productionDate).toLocaleDateString() : ''}</td>
+                        </tr>
+                    `;
+                    $('#filteredTableBody').append(row);
+                });
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", xhr.responseText || error);
+                alert("An error occurred while applying filters. Please try again.");
+            }
+        });
+    };
 
 </script>
 

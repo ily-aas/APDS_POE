@@ -1,0 +1,74 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<div class="row g-3 align-items-end mt-4 mb-4">
+
+    <!-- Category Filter -->
+    <div class="col-md-4">
+        <label for="categoryFilter" class="form-label">Category</label>
+        <select id="categoryFilter" class="form-control">
+            <option selected value="0">All Categories</option>
+            <option value="1">Vegetables</option>
+            <option value="2">Fruits</option>
+            <option value="3">Grains</option>
+            <option value="4">Dairy</option>
+            <option value="5">Livestock</option>
+        </select>
+    </div>
+
+    <!-- Date Input -->
+    <div class="col-md-4">
+        <label for="dateInput" class="form-label">Production Date</label>
+        <input id="dateInput" class="form-control" type="date" />
+    </div>
+
+    <!-- Date Filter -->
+    <div class="col-md-4">
+        <label for="dateFilter" class="form-label">Date Filter Type</label>
+        <select id="dateFilter" class="form-control">
+            <option selected value="0">All</option>
+            <option value="1">Greater Than</option>
+            <option value="2">Less Than</option>
+            <option value="3">Equal To</option>
+        </select>
+    </div>
+
+    <!-- Sort Button -->
+    <div class="col-12 text-end">
+        <button class="btn btn-info mt-2" onclick="applyFilter()">Sort</button>
+    </div>
+
+</div>
+
+
+<div class="filtered-table-container row">
+
+	<h2>Product List</h2>
+
+	<table id="filteredProductTable" class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Category</th>
+				<th>Date Created</th>
+				<th>Production Date</th>
+			</tr>
+		</thead>
+		<tbody id="filteredTableBody">
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Category</td>
+                    <td>@product.DateCreated?.ToString("yyyy-MM-dd")</td>
+                    <td>@product.ProductionDate?.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+		</tbody>
+	</table>
+</div>
+

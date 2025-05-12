@@ -32,6 +32,24 @@ namespace APDS_POE.Controllers
             return View("AddFarmer",user);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Employee")]
+        public IActionResult RenderPartial(int Type)
+        {
+            switch (Type)
+            {
+                case 1:
+                    var Product = _prodRepo.GetAllProducts();
+                    return PartialView("_filteredProduct",Product);
+                case 2:
+                    var users = _userRepo.GetAllUsers();
+                    return PartialView("_Product",users);
+                default:
+                    return BadRequest("Invalid type specified.");
+
+            }
+        }
+
         [HttpPost]
         [Authorize(Roles = "Employee")]
         public IActionResult AddFarmer(User user)
@@ -46,7 +64,34 @@ namespace APDS_POE.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
-        public IActionResult ViewProducts(int ID)
+        public IActionResult GetFilteredProducts(ProductFilterDto Dto)
+        {
+
+            List<Product> products = new List<Product>();
+
+            if (Dto.DateFilter == Models.System.Enums.DateFilter.All && (Dto.Date == null || Dto.Date == DateTime.MinValue) && Dto.Category == Models.System.Enums.Category.All)
+            {
+                products = _prodRepo.GetAllProducts();
+                return Ok(new
+                {
+                    products = products,
+                });
+            }
+
+            products = _prodRepo.GetFilteredProducts(Dto);
+
+            if (products.Count > 0)
+                return Ok(new
+                {
+                    products = products,
+                });
+
+            return BadRequest("No Products Found");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Employee")]
+        public IActionResult ViewFarmerProducts(int ID)
         {
             if (ID == null || ID == 0)
                 return BadRequest();
@@ -57,10 +102,11 @@ namespace APDS_POE.Controllers
             if(User == null)
                 return BadRequest();
 
-            return RedirectToPage("~/Views/Products/Product.cshtml", new ProductVM()
-            {
-                user = User,
+            return Ok(new { 
+            
+                User = User,
                 Products = Products
+
             });
 
         }

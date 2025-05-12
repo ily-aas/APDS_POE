@@ -17,21 +17,33 @@ namespace APDS_POE.Models.System
 
         public enum Category
         {
-            [Description("Vegatables")]
-            Vegatables = 0,
+
+            [Description("All")]
+            All = 0,
+
+            [Description("Vegetables")]
+            Vegatables = 1,
 
             [Description("Fruits")]
-            Fruits = 0,
+            Fruits = 2,
 
             [Description("Grains")]
-            Grains = 0,
+            Grains = 3,
 
             [Description("Dairy Products")]
-            DairyProducts = 0,
+            DairyProducts = 4,
 
             [Description("Poultry")]
-            Poultry = 0,
+            Poultry = 5,
 
+        }
+
+        public enum DateFilter
+        {
+            All = 0,
+            MoreThan = 1,
+            LessThan = 2,
+            EqualsTo = 3,
         }
 
     }

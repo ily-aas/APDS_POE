@@ -1,0 +1,44 @@
+﻿@model List<User>
+
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<div class="user-container row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var user in Model)
+    {
+        <div class="col">
+            <div class="card h-100 text-center" style="cursor:pointer">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center" data-id="@user.Id" onclick="ViewFarmerProducts(this)">
+                    <div class="mb-3">
+                        <i class="fas fa-user-circle fa-4x text-muted"></i>
+                    </div>
+                    <h5 class="card-title">Name : @user.FullName</h5>
+                    <p class="card-text">Username : @user.Username</p>
+                    <p class="card-text"><small class="text-muted">Date Created : @user.DateCreated</small></p>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="product-list-container row d-none">
+
+	<h4 class="mt-2"><span id="FarmerName"></span>'s Product List</h4>
+
+	<table class="mt-2 table table-bordered table-striped" id="UserProducts">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Category</th>
+				<th>Date Created</th>
+				<th>Production Date</th>
+			</tr>
+		</thead>
+        <tbody id="UserProductsBody">
+		</tbody>
+	</table>
+
+</div>
