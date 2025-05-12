@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<User>;
+
+@{
     ViewData["Title"] = "Farmer Dashboard";
 }
 
@@ -36,45 +38,49 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Fresh Tomatoes</h5>
-                    <p class="card-text">Category: Vegetables</p>
-                    <p class="card-text"><small class="text-muted">Created: 2025-05-01</small></p>
-                    <a asp-action="ViewProduct" asp-controller="Farmer" asp-route-id="1" class="btn btn-primary">
-                        <i class="fas fa-eye me-1"></i> View Product
-                    </a>
+        @foreach (var user in Model)
+        {
+            <div class="col">
+                <div class="card h-100 text-center" style="cursor:pointer">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center" data-id="@user.Id" onclick="ViewProducts(this)">
+                        <div class="mb-3">
+                            <i class="fas fa-user-circle fa-4x text-muted"></i>
+                        </div>
+                        <h5 class="card-title">Name : @user.FullName</h5>
+                        <p class="card-text">Username : @user.Username</p>
+                        <p class="card-text"><small class="text-muted">Date Created : @user.DateCreated</small></p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Golden Apples</h5>
-                    <p class="card-text">Category: Fruits</p>
-                    <p class="card-text"><small class="text-muted">Created: 2025-04-20</small></p>
-                    <a asp-action="ViewProduct" asp-controller="Farmer" asp-route-id="2" class="btn btn-primary">
-                        <i class="fas fa-eye me-1"></i> View Product
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Wheat Bales</h5>
-                    <p class="card-text">Category: Grains</p>
-                    <p class="card-text"><small class="text-muted">Created: 2025-03-10</small></p>
-                    <a asp-action="ViewProduct" asp-controller="Farmer" asp-route-id="3" class="btn btn-primary">
-                        <i class="fas fa-eye me-1"></i> View Product
-                    </a>
-                </div>
-            </div>
-        </div>
+        }
+        
     </div>
 </div>
+
+<script>
+
+    const ViewProducts = (elem) =>{
+
+        let id = $(elem).data('id');
+
+        $.ajax({
+            url: '@Url.Action("ViewProducts", "Employee")', 
+            method: 'GET',
+            data:{
+                ID : id,
+            },
+            contentType: 'application/json',
+            success: function (data) {
+                console.log("User data:", data);
+                // Handle the data (e.g., populate UI)
+            },
+            error: function (xhr) {
+                console.error("Error:", xhr.responseText);
+            }
+        });
+
+    }
+
+</script>
 
 

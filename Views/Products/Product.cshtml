@@ -1,0 +1,24 @@
+﻿@model APDS_POE.Models.System.Dtos.ProductVM;
+
+<div class="container">
+    @foreach (var product in Model.Products) // Adjust for your model
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center" data-id="@product.Id" onclick="ViewProductDetails(@product.Id)">
+                    @* <img src="@product.ImageUrl ?? " /images/default-product.png""
+                         class="card-img-top img-fluid mb-3"
+                         alt="Product Image"
+                         style="max-height: 200px; object-fit: contain;" /> *@
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">Category: @product.Category</p>
+                   @*  <p class="card-text">Price: R @product.Price.ToString("F2")</p> *@
+                    <p class="card-text"><small class="text-muted">Created: @product.DateCreated.Value.ToShortDateString()</small></p>
+                    <a href="@Url.Action("ViewProduct", "Farmer", new { id = product.Id })" class="btn btn-primary">
+                        <i class="fas fa-eye me-1"></i> View
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

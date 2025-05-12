@@ -15,6 +15,25 @@ namespace APDS_POE.Models.System
             Employee = 1,
         }
 
+        public enum Category
+        {
+            [Description("Vegatables")]
+            Vegatables = 0,
+
+            [Description("Fruits")]
+            Fruits = 0,
+
+            [Description("Grains")]
+            Grains = 0,
+
+            [Description("Dairy Products")]
+            DairyProducts = 0,
+
+            [Description("Poultry")]
+            Poultry = 0,
+
+        }
+
     }
 
     public static class EnumExtensions

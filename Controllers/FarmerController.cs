@@ -1,5 +1,6 @@
 ﻿using APDS_POE.Models;
 using APDS_POE.Repositories;
+using APDS_POE.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,16 +9,20 @@ namespace APDS_POE.Controllers
     public class FarmerController : Controller
     {
         private readonly IProductRepository _productRepo;
+        private readonly IHelperService _helper;
 
-        public FarmerController(IProductRepository productRepository)
+        public FarmerController(IProductRepository productRepository, IHelperService helperService)
         {
             _productRepo = productRepository;
+            _helper = helperService;
         }
 
         [Authorize(Roles = "Farmer")]
         public IActionResult Index()
         {
-            return View("F_Dashboard");
+            var user = _helper.GetSignedInUser();
+            var products = _productRepo.GetProducts(user.Id);
+            return View("F_Dashboard",products);
         }
 
         [HttpGet]

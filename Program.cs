@@ -32,20 +32,24 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseRouting();
+
+// Custom Middleware must come **after UseRouting**
+app.UseSession();
+app.UseMiddleware<JwtMiddleware>();
+
+// These should come after your custom middleware
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSession();
-app.UseRouting();
+app.UseAuthorization(); // If you use Authorize attributes
 
-// Add middleware
-app.UseSession();
-app.UseMiddleware<JwtMiddleware>(); // <-- our custom JWT middleware
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+// This is critical — endpoint resolution happens here
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.Run();
+

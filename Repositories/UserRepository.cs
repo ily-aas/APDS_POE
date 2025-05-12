@@ -10,6 +10,8 @@ namespace APDS_POE.Repositories
     {
         public User? Login(string Username, string Password, bool IsAdmin = false);
         public AppResponse AddUser(User user);
+        public List<User> GetAllUsers();
+        public User? GetUser(int ID);
     }
     public class UserRepository : IUserRepository
     {
@@ -52,6 +54,16 @@ namespace APDS_POE.Repositories
                 return null;
             }
 
+        }
+
+        public User? GetUser(int ID)
+        {
+            return DB.User.Where(x => x.Id == ID).FirstOrDefault();
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return DB.User.Where(x => (UserRole)x.UserRole == UserRole.Farmer).ToList();
         }
 
         public AppResponse AddUser(User user)

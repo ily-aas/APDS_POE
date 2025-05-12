@@ -8,6 +8,7 @@ namespace APDS_POE.Repositories
     public interface IProductRepository
     {
         public AppResponse AddProduct(Product Product);
+        public List<Product> GetProducts(int ID);
     }
     public class ProductRepository:IProductRepository
     {
@@ -45,6 +46,11 @@ namespace APDS_POE.Repositories
                 response.Message = $"An error occurred while trying to add a product: {ex.Message}";
                 return response;
             }
+        }
+
+        public List<Product> GetProducts(int ID)
+        {
+            return DB.Products.Where(x => x.UserId == ID).ToList();
         }
 
         //TODO: RemoveProduct()

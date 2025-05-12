@@ -112,6 +112,13 @@ namespace APDS_POE.Services
         {
             var endpoint = context.GetEndpoint();
 
+            if (endpoint == null)
+            {
+                await _next(context);
+                return;
+            }
+
+
             // Allow anonymous endpoints
             if (endpoint?.Metadata?.GetMetadata<AllowAnonymousAttribute>() != null)
             {

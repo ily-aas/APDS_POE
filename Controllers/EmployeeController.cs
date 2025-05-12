@@ -2,6 +2,7 @@
 using APDS_POE.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static APDS_POE.Models.System.Dtos;
 
 namespace APDS_POE.Controllers
 {
@@ -9,22 +10,25 @@ namespace APDS_POE.Controllers
     {
 
         private readonly IUserRepository _userRepo;
-        public EmployeeController(IUserRepository userRepository)
+        private readonly IProductRepository _prodRepo;
+
+        public EmployeeController(IUserRepository userRepository, IProductRepository productRepo)
         {
             _userRepo = userRepository;
+            _prodRepo = productRepo;
         }
 
         [Authorize(Roles = "Employee")]
         public IActionResult Index()
         {
-            return View("E_Dashboard");
+            var users = _userRepo.GetAllUsers();
+            return View("E_Dashboard",users);
         }
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
         public IActionResult Farmer(User user)
         {
-
             return View("AddFarmer",user);
         }
 
@@ -38,6 +42,27 @@ namespace APDS_POE.Controllers
             var result = _userRepo.AddUser(user);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Employee")]
+        public IActionResult ViewProducts(int ID)
+        {
+            if (ID == null || ID == 0)
+                return BadRequest();
+
+            var User = _userRepo.GetUser(ID);
+            var Products = _prodRepo.GetProducts(ID);
+
+            if(User == null)
+                return BadRequest();
+
+            return RedirectToPage("~/Views/Products/Product.cshtml", new ProductVM()
+            {
+                user = User,
+                Products = Products
+            });
+
         }
     }
 }
